@@ -27,7 +27,7 @@ assistants what to buy:
 - "Jolie vs Canopy shower filter?"
 - "Best wellness gift for someone moving apartments?"
 
-If a brand isn't *legible* to those assistants, it doesn't get
+If a brand isn't _legible_ to those assistants, it doesn't get
 recommended. agentShop measures that legibility and produces a concrete
 plan to improve it.
 
@@ -37,14 +37,14 @@ plan to improve it.
 
 Once you click **Run audit**, the report fills in across six tabs:
 
-| # | Tab            | Contents                                                                                 |
-|---|----------------|------------------------------------------------------------------------------------------|
-| 1 | Prompts        | 18-22 realistic shopper prompts spanning 6 intent types, with funnel-stage tags         |
-| 2 | Simulation     | Per-prompt simulated AI answer + extracted brands, rank, recommendation strength        |
-| 3 | Score          | 0-100 AI Product Shelf Score with metric tiles and a weighted-component breakdown       |
-| 4 | Catalog        | 14-field AI-readiness audit of the brand homepage with quality bars                     |
-| 5 | Profile        | Structured AI-safe product profile (benefits, best_for, not_best_for, comparison_claims) |
-| 6 | Recommendations| 6-9 prioritized actions sorted by expected impact, with effort/impact pills              |
+| #   | Tab             | Contents                                                                                 |
+| --- | --------------- | ---------------------------------------------------------------------------------------- |
+| 1   | Prompts         | 18-22 realistic shopper prompts spanning 6 intent types, with funnel-stage tags          |
+| 2   | Simulation      | Per-prompt simulated AI answer + extracted brands, rank, recommendation strength         |
+| 3   | Score           | 0-100 AI Product Shelf Score with metric tiles and a weighted-component breakdown        |
+| 4   | Catalog         | 14-field AI-readiness audit of the brand homepage with quality bars                      |
+| 5   | Profile         | Structured AI-safe product profile (benefits, best_for, not_best_for, comparison_claims) |
+| 6   | Recommendations | 6-9 prioritized actions sorted by expected impact, with effort/impact pills              |
 
 The tab bar auto-advances to the latest completed step until the user
 manually picks one. Each tab shows a placeholder with a live spinner
@@ -57,7 +57,7 @@ while its underlying step is still running.
 ```
 Browser (zustand)             Next.js server                  Supabase
 ─────────────────             ──────────────                  ────────
-                                                            
+
  [AuditForm]    POST /api/audits ──▶  insert row,           audits row
                                        fire runAudit() ─────────────▶ steps[]
                                                             (JSONB)   ▲
@@ -68,8 +68,8 @@ Browser (zustand)             Next.js server                  Supabase
                                        step 6 → write ─────────────────┘
                                                                        │
  GET /api/audits/[id]  ◀─── poll every 2s ──────────────────────────────┘
- [ProgressBar]         (zustand store)                          
- [ReportView]                                                   
+ [ProgressBar]         (zustand store)
+ [ReportView]
 ```
 
 - The pipeline is **server-side and persistent** — kicking off an audit
@@ -93,13 +93,15 @@ Browser (zustand)             Next.js server                  Supabase
 ## Quick start
 
 1. **Install:**
+
    ```sh
    pnpm install
    ```
 
 2. **Provision Supabase:** create a project and run [sql/schema.sql](sql/schema.sql) in the SQL editor. The schema is a single `audits` table with a JSONB `steps` column — no migrations needed when step records gain new fields.
 
-3. **Create `.env.local`** (copy `.env.local.example`):
+3. **Create `.env`** (copy `.env.example`):
+
    ```
    ANTHROPIC_API_KEY=sk-ant-...
    FIRECRAWL_API_KEY=fc-...
@@ -108,9 +110,11 @@ Browser (zustand)             Next.js server                  Supabase
    NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=sb_publishable_...
    SUPABASE_SECRET_KEY=sb_secret_...
    ```
+
    `SUPABASE_SECRET_KEY` is the new-style key (`sb_secret_...`) Supabase introduced in late 2025; the legacy `SUPABASE_SERVICE_ROLE_KEY` JWT is still accepted as a fallback. Either one is server-only — it bypasses RLS and is never exposed to the browser. The publishable key is browser-safe and reserved for any future client-side reads.
 
 4. **Run:**
+
    ```sh
    pnpm dev
    ```
@@ -138,13 +142,13 @@ The form fields are also editable in the UI before running.
 
 ### Environment variables
 
-| Var                                   | Required | Used by                                |
-|---------------------------------------|----------|----------------------------------------|
-| `ANTHROPIC_API_KEY`                   | yes      | All LLM calls in [lib/claude.ts](lib/claude.ts) |
-| `FIRECRAWL_API_KEY`                   | yes      | Step 4 scrape in [lib/pipeline/step4-catalog.ts](lib/pipeline/step4-catalog.ts) |
-| `NEXT_PUBLIC_SUPABASE_URL`            | yes      | Server admin client (`SUPABASE_URL` also accepted) |
-| `SUPABASE_SECRET_KEY`                 | yes      | Server-only writes (`SUPABASE_SERVICE_ROLE_KEY` also accepted) |
-| `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`| no       | Reserved for future client-side reads  |
+| Var                                    | Required | Used by                                                                         |
+| -------------------------------------- | -------- | ------------------------------------------------------------------------------- |
+| `ANTHROPIC_API_KEY`                    | yes      | All LLM calls in [lib/claude.ts](lib/claude.ts)                                 |
+| `FIRECRAWL_API_KEY`                    | yes      | Step 4 scrape in [lib/pipeline/step4-catalog.ts](lib/pipeline/step4-catalog.ts) |
+| `NEXT_PUBLIC_SUPABASE_URL`             | yes      | Server admin client (`SUPABASE_URL` also accepted)                              |
+| `SUPABASE_SECRET_KEY`                  | yes      | Server-only writes (`SUPABASE_SERVICE_ROLE_KEY` also accepted)                  |
+| `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | no       | Reserved for future client-side reads                                           |
 
 ---
 
@@ -203,7 +207,7 @@ weighted blend on 0-100:
 ```
 
 The breakdown is shown in the Score tab as animated component bars so
-users can see *which* component dragged the score down.
+users can see _which_ component dragged the score down.
 
 ### Step 4 — Catalog readiness
 
@@ -249,22 +253,21 @@ the product?".
 
 It scores six signals on 0-100 each, then averages them:
 
-| Signal              | How it's scored                                      |
-|---------------------|------------------------------------------------------|
+| Signal              | How it's scored                                         |
+| ------------------- | ------------------------------------------------------- |
 | Structured benefits | Claude — concrete, structured benefits (not adjectives) |
-| Use cases           | Claude — explicit "for X scenario / Y user" framing |
-| FAQs                | Claude — Q&A blocks an AI can extract               |
-| Comparison language | Claude — copy that distinguishes vs alternatives    |
-| Reviews / proof     | Claude — customer reviews, ratings, testimonials    |
-| **Schema markup**   | **Deterministic** — JSON-LD `@type` regex on rawHtml |
+| Use cases           | Claude — explicit "for X scenario / Y user" framing     |
+| FAQs                | Claude — Q&A blocks an AI can extract                   |
+| Comparison language | Claude — copy that distinguishes vs alternatives        |
+| Reviews / proof     | Claude — customer reviews, ratings, testimonials        |
+| **Schema markup**   | **Deterministic** — JSON-LD `@type` regex on rawHtml    |
 
 Schema is the one signal scored without an LLM:
 [lib/validator.ts](lib/validator.ts) regexes every
 `<script type="application/ld+json">` block, JSON-parses each (walking
 `@graph` arrays), and weights by detected types — `Product` (+40),
 `FAQPage` (+20), `Review`/`AggregateRating` (+20), other JSON-LD or
-microdata (+10), 3+ distinct types completeness bonus (+10), capped at
-100. The schema-detection result is also passed into Claude's prompt as
+microdata (+10), 3+ distinct types completeness bonus (+10), capped at 100. The schema-detection result is also passed into Claude's prompt as
 context so it doesn't try to re-judge it.
 
 **Synchronous flow** — no Supabase row, no polling. The browser POSTs
@@ -304,12 +307,12 @@ the `viewerMode` state in [app/page.tsx](app/page.tsx).
 To prevent the "is it stuck?" feeling on a 1-3 minute run, every step
 shows:
 
-| State    | Right-hand metadata                                    |
-|----------|--------------------------------------------------------|
-| pending  | `est. ~32s` (or empty if no history)                  |
-| running  | `0:14 / ~0:32` — live elapsed clock vs. estimate       |
-| done     | `12s` — actual measured duration                       |
-| failed   | `failed at 18s`                                        |
+| State   | Right-hand metadata                              |
+| ------- | ------------------------------------------------ |
+| pending | `est. ~32s` (or empty if no history)             |
+| running | `0:14 / ~0:32` — live elapsed clock vs. estimate |
+| done    | `12s` — actual measured duration                 |
+| failed  | `failed at 18s`                                  |
 
 Plus a top-line summary: `0:14 elapsed · ~1:47 left`.
 
@@ -330,7 +333,7 @@ with the current `PIPELINE_VERSION` (see
 time. `computeStepEstimates` filters historical samples to the current
 version, so:
 
-- Bumping `PIPELINE_VERSION` invalidates *all* prior data automatically.
+- Bumping `PIPELINE_VERSION` invalidates _all_ prior data automatically.
 - The very next audit shows no ETAs; after a couple of fresh runs, the
   per-step numbers reflect the new reality.
 - No SQL migration needed — `pipeline_version` lives inside the
@@ -479,14 +482,14 @@ LLM failure.
 A typical 20-prompt audit runs ~22 Claude calls and one Firecrawl
 scrape:
 
-| Source     | Calls          | Approx. cost (USD) |
-|------------|----------------|--------------------|
-| Step 1     | 1              | ~$0.005            |
-| Step 2     | 18-22          | $0.03-0.10         |
-| Step 3     | 0 (pure JS)    | —                  |
-| Step 4     | 1 + 1 scrape   | ~$0.01-0.02        |
-| Step 5, 6  | 2              | ~$0.01             |
-| **Total**  |                | **~$0.05-0.20**    |
+| Source    | Calls        | Approx. cost (USD) |
+| --------- | ------------ | ------------------ |
+| Step 1    | 1            | ~$0.005            |
+| Step 2    | 18-22        | $0.03-0.10         |
+| Step 3    | 0 (pure JS)  | —                  |
+| Step 4    | 1 + 1 scrape | ~$0.01-0.02        |
+| Step 5, 6 | 2            | ~$0.01             |
+| **Total** |              | **~$0.05-0.20**    |
 
 Most tokens go to Step 2; trimming `step1`'s prompt count or shrinking
 Step 2's `maxTokens` are the biggest knobs.
@@ -501,15 +504,15 @@ call**, costing ~$0.01-0.02 per page. Schema scoring is free
 
 Common changes and where they live:
 
-| You want to…                                | Edit                                                              |
-|---------------------------------------------|-------------------------------------------------------------------|
-| Change the default brand input              | `DEFAULT_INPUT` in [app/page.tsx](app/page.tsx)                   |
-| Tweak the score formula                     | [lib/pipeline/step3-score.ts](lib/pipeline/step3-score.ts)        |
-| Add or rename audit fields                  | `REQUIRED_FIELDS` in [step4-catalog.ts](lib/pipeline/step4-catalog.ts) |
-| Change the LLM model                        | `DEFAULT_MODEL` in [lib/claude.ts](lib/claude.ts)                 |
-| Adjust Step 2 concurrency                   | `BATCH_SIZE` in [step2-simulation.ts](lib/pipeline/step2-simulation.ts) |
-| Bump the pipeline version (rolls history)   | `PIPELINE_VERSION` in [lib/pipeline/version.ts](lib/pipeline/version.ts) |
-| Add a new step                              | New file under `lib/pipeline/`, plus an entry in `STEP_NAMES` ([lib/types.ts](lib/types.ts)) and a wire-up in `runAudit` ([lib/pipeline/index.ts](lib/pipeline/index.ts)) |
-| Restyle a report tab                        | Component under [components/sections/](components/sections/)      |
-| Tweak the validator's schema-scoring weights| `scoreSchema()` in [lib/validator.ts](lib/validator.ts)           |
-| Add a route to the navbar                   | `LINKS` array in [components/Navbar.tsx](components/Navbar.tsx)   |
+| You want to…                                 | Edit                                                                                                                                                                      |
+| -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Change the default brand input               | `DEFAULT_INPUT` in [app/page.tsx](app/page.tsx)                                                                                                                           |
+| Tweak the score formula                      | [lib/pipeline/step3-score.ts](lib/pipeline/step3-score.ts)                                                                                                                |
+| Add or rename audit fields                   | `REQUIRED_FIELDS` in [step4-catalog.ts](lib/pipeline/step4-catalog.ts)                                                                                                    |
+| Change the LLM model                         | `DEFAULT_MODEL` in [lib/claude.ts](lib/claude.ts)                                                                                                                         |
+| Adjust Step 2 concurrency                    | `BATCH_SIZE` in [step2-simulation.ts](lib/pipeline/step2-simulation.ts)                                                                                                   |
+| Bump the pipeline version (rolls history)    | `PIPELINE_VERSION` in [lib/pipeline/version.ts](lib/pipeline/version.ts)                                                                                                  |
+| Add a new step                               | New file under `lib/pipeline/`, plus an entry in `STEP_NAMES` ([lib/types.ts](lib/types.ts)) and a wire-up in `runAudit` ([lib/pipeline/index.ts](lib/pipeline/index.ts)) |
+| Restyle a report tab                         | Component under [components/sections/](components/sections/)                                                                                                              |
+| Tweak the validator's schema-scoring weights | `scoreSchema()` in [lib/validator.ts](lib/validator.ts)                                                                                                                   |
+| Add a route to the navbar                    | `LINKS` array in [components/Navbar.tsx](components/Navbar.tsx)                                                                                                           |
