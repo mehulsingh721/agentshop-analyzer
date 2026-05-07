@@ -5,7 +5,7 @@ import { cn } from "@/lib/cn";
 
 const LINKS = [
   { href: "/", label: "Audit" },
-  { href: "/validator", label: "Validator" },
+  { href: "/validator", label: "Validator (Bonus Option-B)" },
 ];
 
 export function Navbar() {

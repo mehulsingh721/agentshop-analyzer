@@ -157,11 +157,11 @@ function Hero({
       transition={{ duration: 0.7, ease: easeOut }}
       className="grid gap-5"
     >
-      <div className="flex items-center gap-3">
+      {/* <div className="flex items-center gap-3">
         <SectionLabel pulse>
-          {viewerMode ? "Shared report" : "Onboarding"}
+          {viewerMode ? "Shared report" : ""}
         </SectionLabel>
-      </div>
+      </div> */}
       <h1 className="text-[2.5rem] leading-[1.05] tracking-tight sm:text-[3.5rem]">
         AI Product Shelf{" "}
         <span className="relative inline-block">
