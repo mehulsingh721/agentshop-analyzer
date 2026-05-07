@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cd c:\\\\\\\\Users\\\\\\\\mehul\\\\\\\\Projects\\\\\\\\side-projects\\\\\\\\agentshop-analyzer)",
+      "Bash(Get-ChildItem -Path \"c:\\\\Users\\\\mehul\\\\Projects\\\\side-projects\\\\agentshop-analyzer\\\\node_modules\\\\next\\\\dist\\\\docs\" -Directory)",
+      "Bash(pnpm dev *)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:3000/)",
+      "Bash(pnpm list *)",
+      "Bash(curl -s -o /dev/null -w \"GET / -> %{http_code}\\\\n\" http://localhost:3000/)",
+      "Bash(curl -s -o /dev/null -w \"GET /validator -> %{http_code}\\\\n\" http://localhost:3000/validator)"
+    ]
+  }
+}
